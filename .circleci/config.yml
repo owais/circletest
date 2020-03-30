@@ -80,10 +80,10 @@ workflows:
           requires:
             - setup-and-lint
             - cross-compile
-            - loadtest
-            - test
-            - gosec
-            - coverage
+              #- loadtest
+              #- test
+              #- gosec
+              #- coverage
           filters:
             branches:
               ignore: /.*/
@@ -182,20 +182,6 @@ jobs:
     steps:
       - attach_to_workspace
       - setup_remote_docker
-      - run:
-          name: Build image
-          command: |
-            make docker-otelcol
-            docker tag otelcol:latest otel/opentelemetry-collector:${CIRCLE_TAG:1}
-            docker tag otelcol:latest otel/opentelemetry-collector:latest
-      - run:
-          name: Login to Docker Hub
-          command: docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-      - run:
-          name: Push image
-          command: |
-            docker push otel/opentelemetry-collector:${CIRCLE_TAG:1}
-            docker push otel/opentelemetry-collector:latest
       - run:
           name: Calculate checksums 
           command: shasum -a 256 bin/* > bin/checksums.txt
