@@ -34,10 +34,7 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - setup-and-lint:
-          filters:
-            tags:
-              only: /.*/
+      - setup-and-lint
       - build:
           requires:
             - setup-and-lint
