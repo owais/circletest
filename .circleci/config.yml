@@ -78,7 +78,6 @@ workflows:
               only: /.*/
       - publish-stable:
           requires:
-            - setup-and-lint
             - cross-compile
             - loadtest
             - test
