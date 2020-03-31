@@ -81,7 +81,7 @@ workflows:
             - setup-and-lint
       - publish-stable:
           requires:
-            - cross-compile
+            - setup-and-lint
           filters:
             branches:
               ignore: /.*/
