@@ -114,6 +114,9 @@ jobs:
     steps:
       - attach_to_workspace
       - setup_remote_docker
+      - run:
+          name: Find GHR
+          command: which ghr
       - publish_docker_images:
           repo: opentelemetry-collector-contrib-dev
           tag: ${CIRCLE_TAG:1}
