@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.0
 
 commands:
   attach_to_workspace:
@@ -61,19 +61,19 @@ jobs:
       - image: cimg/go:1.14
     steps:
       - checkout
-      #- run:
-      #    name: Install bazzar
-      #    command: sudo apt update && sudo apt-get install bzr -y
+      - run:
+          name: Install bazzar
+          command: sudo apt update && sudo apt-get install bzr -y
       - restore_cache: # restores saved cache if no changes are detected since last run
           keys:
             - cimg-go-pkg-mod-{{ checksum "go.sum" }}-v2
       - run:
           name: Install tools
           command: make install-tools
-      #- run:
-      #    name: create modules dir
-      #    command: mkdir -p /home/circleci/go/pkg/mod
-      #- run:
+      - run:
+          name: create modules dir
+          command: mkdir -p /home/circleci/go/pkg/mod
+      # - run:
       #    name: Verify
       #    command: make ci
       #- run:
@@ -83,10 +83,10 @@ jobs:
           key: cimg-go-pkg-mod-{{ checksum "go.sum" }}-v2
           paths:
             - "/home/circleci/go/pkg/mod"
-      #- store_artifacts:
-      #    path: testbed/tests/results
-      #- store_test_results:
-      #    path: testbed/tests/results/junit
+      - store_artifacts:
+          path: testbed/tests/results
+      - store_test_results:
+          path: testbed/tests/results/junit
       - persist_to_workspace:
           root: ~/
           paths:
