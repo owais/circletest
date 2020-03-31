@@ -42,8 +42,8 @@ commands:
           name: Build image
           command: |
             make docker-otelcol
-            docker tag owais:latest otel/<< parameters.repo >>:<< parameters.tag >>
-            docker tag owais:latest otel/<< parameters.repo >>:latest
+            docker tag otelcol:latest otel/<< parameters.repo >>:<< parameters.tag >>
+            docker tag otelcol:latest otel/<< parameters.repo >>:latest
       - run:
           name: Push image
           command: |
