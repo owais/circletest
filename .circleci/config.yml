@@ -64,39 +64,21 @@ workflows:
       - build:
           requires:
             - setup-and-lint
-          filters:
-            tags:
-              only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - cross-compile:
           requires:
             - build
-          filters:
-            tags:
-              only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - loadtest:
           requires:
             - build
-          filters:
-            tags:
-              only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - test:
           requires:
             - setup-and-lint
-          filters:
-            tags:
-              only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - gosec:
           requires:
             - setup-and-lint
-          filters:
-            tags:
-              only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - coverage:
           requires:
             - setup-and-lint
-          filters:
-            tags:
-              only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - publish-stable:
           requires:
             - cross-compile
