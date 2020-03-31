@@ -14,30 +14,12 @@
 
 package tests
 
-// This file contains Test functions which initiate the tests. The tests can be either
-// coded in this file or use scenarios from perf_scenarios.go.
-
 import (
 	"testing"
 
 	"github.com/open-telemetry/opentelemetry-collector/testbed/testbed"
+	scenarios "github.com/open-telemetry/opentelemetry-collector/testbed/tests"
 )
-
-func TestMetricNoBackend10kDPSOpenCensus(t *testing.T) {
-	tc := testbed.NewTestCase(
-		t,
-		testbed.NewOCMetricDataSender(55678),
-		testbed.NewOCDataReceiver(testbed.DefaultOCPort),
-	)
-	defer tc.Stop()
-
-	tc.SetResourceLimits(testbed.ResourceSpec{ExpectedMaxCPU: 200, ExpectedMaxRAM: 200})
-	tc.StartAgent()
-
-	tc.StartLoad(testbed.LoadOptions{DataItemsPerSecond: 10000})
-
-	tc.Sleep(tc.Duration)
-}
 
 func TestMetric10kDPS(t *testing.T) {
 	tests := []struct {
@@ -52,23 +34,32 @@ func TestMetric10kDPS(t *testing.T) {
 			testbed.NewOCDataReceiver(testbed.GetAvailablePort(t)),
 			testbed.ResourceSpec{
 				ExpectedMaxCPU: 29,
-				ExpectedMaxRAM: 59,
+				ExpectedMaxRAM: 70,
 			},
 		},
 		{
-			"OTLP",
-			testbed.NewOTLPMetricDataSender(testbed.GetAvailablePort(t)),
-			testbed.NewOTLPDataReceiver(testbed.GetAvailablePort(t)),
+			"Carbon",
+			NewCarbonDataSender(testbed.GetAvailablePort(t)),
+			NewCarbonDataReceiver(testbed.GetAvailablePort(t)),
 			testbed.ResourceSpec{
-				ExpectedMaxCPU: 69,
-				ExpectedMaxRAM: 59,
+				ExpectedMaxCPU: 115,
+				ExpectedMaxRAM: 65,
+			},
+		},
+		{
+			"SignalFx",
+			NewSFxMetricDataSender(testbed.GetAvailablePort(t)),
+			NewSFxMetricsDataReceiver(testbed.GetAvailablePort(t)),
+			testbed.ResourceSpec{
+				ExpectedMaxCPU: 40,
+				ExpectedMaxRAM: 70,
 			},
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			Scenario10kItemsPerSecond(
+			scenarios.Scenario10kItemsPerSecond(
 				t,
 				test.sender,
 				test.receiver,

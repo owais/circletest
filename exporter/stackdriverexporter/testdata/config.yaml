@@ -1,0 +1,25 @@
+receivers:
+  examplereceiver:
+
+processors:
+  exampleprocessor:
+
+exporters:
+  stackdriver:
+  stackdriver/customname:
+    project: my-project
+    metric_prefix: prefix
+    endpoint: test-endpoint
+    number_of_workers: 3
+    skip_create_metric_descriptor: true
+    use_insecure: true
+  stackdriver/disabled: # will be ignored
+    disabled: true
+
+service:
+  pipelines:
+    traces:
+        receivers: [examplereceiver]
+        processors: [exampleprocessor]
+        exporters: [stackdriver]
+
