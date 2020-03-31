@@ -100,10 +100,6 @@ workflows:
       - publish-stable:
           requires:
             - cross-compile
-            - loadtest
-            - test
-            - gosec
-            - coverage
           filters:
             branches:
               ignore: /.*/
@@ -112,10 +108,6 @@ workflows:
       - publish-dev:
           requires:
             - cross-compile
-            - loadtest
-            - test
-            - gosec
-            - coverage
           filters:
             branches:
               only: master
