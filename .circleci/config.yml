@@ -107,7 +107,8 @@ workflows:
               only: /^v([0-9])+.([0-9])+.([0-9])+.*/
       - publish-dev:
           requires:
-            - cross-compile
+              # - cross-compile
+              - setup-and-lint
           filters:
             branches:
               only: master
